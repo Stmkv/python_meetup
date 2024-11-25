@@ -37,7 +37,7 @@ class User(models.Model):
         "Статус", max_length=50, choices=STATUS_CHOICES, default="PARTICIPANT"
     )
 
-    def str(self) -> str:
+    def __str__(self) -> str:
         return f"{self.name} - {self.tg_id}"
 
     class Meta:
@@ -76,7 +76,7 @@ class Lecture(models.Model):
 
 class Program(models.Model):
     name = models.CharField("Название программы", max_length=255)
-    Lectures = models.ManyToManyField(
+    lectures = models.ManyToManyField(
         Lecture, related_name="programs", verbose_name="Лекции"
     )
     date = models.DateField("Дата проведения программы", blank=True, null=True)
