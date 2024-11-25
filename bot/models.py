@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils import timezone
 
 
 class User(models.Model):
@@ -34,8 +35,34 @@ class User(models.Model):
     )
 
     def __str__(self) -> str:
-        return f'{self.firstname} - {self.tg_id}'
+        return f'{self.name} - {self.tg_id}'
   
     class Meta:
         verbose_name = 'Участник',
         verbose_name_plural = 'Участники'
+
+
+class Donate(models.Model):
+    user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        verbose_name='Кто задонатил',
+        related_name='donates'
+        )
+    amount = models.DecimalField(
+        'Сумма',
+        decimal_places=2,
+        max_digits=8,
+        default=0
+        )
+    donated_at = models.DateTimeField(
+        'Время доната',
+        default=timezone.now(),
+    )
+
+    def __str__(self) -> str:
+        return f'{self.user.name} - {self.amount}'
+  
+    class Meta:
+        verbose_name = 'Донат',
+        verbose_name_plural = 'Донаты'
